@@ -1,0 +1,43 @@
+KLIMAATSCENARIO:
+  label: "Klimaatscenario"
+  eenheid: ""
+  uitleg: "Aangenomen klimaatverandering. Bepaalt zeespiegelstijging en afvoerstatistiek. W (warm) is zwaarder dan G (gematigd)."
+  impact: "hoger"
+  waarden:
+    "3": "G (gematigd)"
+    "4": "W (warm)"
+ZWS_STIJGING:
+  label: "Zeewaterstandstijging"
+  eenheid: "m"
+  uitleg: "Aangenomen stijging van de zeewaterstand. Een hogere waarde verhoogt de belasting op de kering."
+  impact: "hoger"
+QAFTOP:
+  label: "Aftopdebiet"
+  eenheid: "m³/s"
+  uitleg: "Rivierafvoer waarboven wordt afgetopt in de statistiek. Beïnvloedt de zwaarste meegenomen afvoeren."
+  impact: "context"
+QCR:
+  label: "Kritiek overslagdebiet"
+  eenheid: "l/s/m"
+  uitleg: "Toelaatbare golfoverslag over de kering. Een hogere toelaatbare waarde geeft een lager benodigd belastingniveau."
+  impact: "lager"
+OVKANSQ:
+  label: "Afvoerstatistiek (overschrijdingskansen)"
+  eenheid: ""
+  uitleg: "Bestand met overschrijdingskansen van de rivierafvoer. De keuze G/W bepaalt de zwaarte van de statistiek."
+  impact: "context"
+FACTOR_TP_TM:
+  label: "Factor Tp/Tm-1,0"
+  eenheid: "-"
+  uitleg: "Omrekenfactor tussen piek- en spectrale golfperiode. Beïnvloedt de berekende golfoverslag."
+  impact: "context"
+MU:
+  label: "Mu (keringonzekerheid)"
+  eenheid: "-"
+  uitleg: "Verwachtingswaarde van de onzekerheid in het keringgedrag."
+  impact: "context"
+SIGMA:
+  label: "Sigma (keringonzekerheid)"
+  eenheid: "-"
+  uitleg: "Spreiding van de onzekerheid in het keringgedrag. Meer spreiding kan de belasting verhogen."
+  impact: "context"

@@ -3,6 +3,8 @@
 Vergelijk HydraNL-berekeningen (invoer + uitvoer) en begrijp de verschillen en
 hun impact in gewone taal. Gebouwd met Streamlit.
 
+[![Deploy op Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deploy?repository=Bader914/hydranl-vergelijktool&branch=main&mainModule=app.py)
+
 ## Wat het doet
 - Leest HydraNL-berekeningen (`invoer.hyd`, `uitvoer.html`, `ffq.txt`).
 - Toont invoerverschillen met uitleg per parameter.
@@ -21,13 +23,21 @@ Voor `.rar`-uploads is het systeempakket `unar` nodig (`sudo apt install unar`).
 
 ## Testen
 ```bash
+pip install -r requirements-dev.txt
 python -m pytest
 ```
 
 ## Deploy op Streamlit Community Cloud
-1. Push deze repo naar GitHub.
-2. Maak op share.streamlit.io een app aan die naar `app.py` wijst.
-3. `packages.txt` (met `unar`) en `requirements.txt` worden automatisch gebruikt.
+Klik op de **Deploy op Streamlit**-knop bovenaan, of handmatig:
+1. Ga naar [share.streamlit.io](https://share.streamlit.io) en log in met GitHub.
+2. **New app → From existing repo**.
+3. Repository: `Bader914/hydranl-vergelijktool`, branch: `main`, main file: `app.py`.
+4. Klik **Deploy**. `requirements.txt` (runtime) en `packages.txt` (`unar`, voor
+   `.rar`-uploads) worden automatisch gebruikt.
+
+Python-versie hoeft niet ingesteld te worden; de standaard van Streamlit Cloud
+(3.11+) werkt. `.zip`-uploads werken altijd; voor `.rar` zorgt `packages.txt` op
+de cloud voor het benodigde `unar`-programma.
 
 ## Kennisbank uitbreiden
 Parameteruitleg staat in `data/parameters.yaml`. Voeg parameters toe of pas

@@ -7,10 +7,16 @@ hun impact in gewone taal. Gebouwd met Streamlit.
 
 ## Wat het doet
 - Leest HydraNL-berekeningen (`invoer.hyd`, `uitvoer.html`, `ffq.txt`).
-- Toont invoerverschillen met uitleg per parameter.
+- Toont invoerverschillen met uitleg per parameter (kennisbank `data/parameters.yaml`).
 - Vergelijkt het Hydraulisch Belastingniveau (HBN) per frequentie, incl. Δ in cm.
-- Genereert een impact-duiding in gewone taal t.o.v. een gekozen referentie.
+- **Genereert een automatische diepe analyse:** dominant belastingmechanisme
+  (keringtoestand + windrichting uit de illustratiepunten), HBN-profiel over alle
+  frequenties, en per variant het effect met impact-richting per parameter.
+- Geeft een beknopte impact-duiding in gewone taal t.o.v. een gekozen referentie.
 - Toont illustratiepunten per windrichting/keringtoestand.
+
+Zie [`ANALYSE.md`](ANALYSE.md) voor een uitgewerkte, data-onderbouwde analyse van
+de drie voorbeeldberekeningen (incl. decompositie klimaat- vs. ontwerpeffecten).
 
 ## Lokaal draaien
 ```bash

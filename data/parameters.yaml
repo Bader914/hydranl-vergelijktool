@@ -1,43 +1,225 @@
+# Kennisbank HydraNL-invoerparameters.
+# Per parameter: label, eenheid, uitleg (gewone taal) en impact-richting op het HBN.
+# impact: "hoger" = een zwaardere/hogere waarde verhoogt het HBN;
+#         "lager" = een hogere waarde verlaagt het HBN;
+#         "context" = geen eenduidige richting (hangt van de situatie af);
+#         "geen" = beïnvloedt het resultaat niet (administratief/rekentechnisch).
+# 'waarden' vertaalt codewaarden naar leesbare tekst.
+
+# ---------------- Klimaat & zeespiegel ----------------
 KLIMAATSCENARIO:
   label: "Klimaatscenario"
   eenheid: ""
-  uitleg: "Aangenomen klimaatverandering. Bepaalt zeespiegelstijging en afvoerstatistiek. W (warm) is zwaarder dan G (gematigd)."
+  uitleg: "KNMI-klimaatscenario waarop de statistiek is gebaseerd. G = gematigd, W = warm (meer opwarming, hogere zeespiegelstijging en zwaardere rivierafvoeren). W geeft een zwaardere belasting dan G."
   impact: "hoger"
   waarden:
+    "1": "G (gematigd)"
+    "2": "G+ (gematigd, meer luchtstromingsverandering)"
     "3": "G (gematigd)"
     "4": "W (warm)"
 ZWS_STIJGING:
   label: "Zeewaterstandstijging"
   eenheid: "m"
-  uitleg: "Aangenomen stijging van de zeewaterstand. Een hogere waarde verhoogt de belasting op de kering."
+  uitleg: "Aangenomen zeespiegelstijging bovenop de zeewaterstandstatistiek. Bij deze benedenrivier-/kustlocatie werkt de zee direct door in de belasting, dus een hogere waarde verhoogt het HBN merkbaar. Wordt als opslag toegepast; het zeewaterstandbestand zelf blijft gelijk."
   impact: "hoger"
-QAFTOP:
-  label: "Aftopdebiet"
-  eenheid: "m³/s"
-  uitleg: "Rivierafvoer waarboven wordt afgetopt in de statistiek. Beïnvloedt de zwaarste meegenomen afvoeren."
-  impact: "context"
+H_VERHOGING:
+  label: "Waterstandsverhoging"
+  eenheid: "m"
+  uitleg: "Extra vaste opslag op de waterstand (bijv. voor een lokale correctie). Een hogere waarde verhoogt het HBN direct."
+  impact: "hoger"
+
+# ---------------- Faalmechanisme & criterium ----------------
 QCR:
   label: "Kritiek overslagdebiet"
-  eenheid: "l/s/m"
-  uitleg: "Toelaatbare golfoverslag over de kering. Een hogere toelaatbare waarde geeft een lager benodigd belastingniveau."
+  eenheid: "m³/s/m"
+  uitleg: "Toelaatbare golfoverslag over de kruin (in de invoer in m³/s per meter; 0,001 = 1 l/s/m, 0,01 = 10 l/s/m). Hoe meer overslag je toestaat, hoe lager het benodigde belastingniveau. Een 10x hogere waarde verlaagt het HBN daarom fors."
   impact: "lager"
-OVKANSQ:
-  label: "Afvoerstatistiek (overschrijdingskansen)"
+FALEN:
+  label: "Faalmechanisme"
   eenheid: ""
-  uitleg: "Bestand met overschrijdingskansen van de rivierafvoer. De keuze G/W bepaalt de zwaarte van de statistiek."
+  uitleg: "Het beschouwde faalmechanisme. 1 = golfoverslag en overloop (de kering bezwijkt als de golfoverslag het kritieke debiet overschrijdt)."
+  impact: "context"
+  waarden:
+    "1": "Golfoverslag en overloop"
+BERTYPE:
+  label: "Berekeningstype"
+  eenheid: ""
+  uitleg: "Type berekening. 1 = Hydraulisch Belastingniveau (HBN): het waterpeil dat samen met de golven de norm haalt. Ontwerpmodus."
+  impact: "geen"
+  waarden:
+    "1": "Hydraulisch belastingniveau (HBN)"
+FREQ:
+  label: "Doelfrequenties"
+  eenheid: "1/jaar"
+  uitleg: "Overschrijdingsfrequenties waarvoor het HBN wordt bepaald (bijv. 1/3000, 1/10000, 1/30000). Zwaardere norm (kleinere frequentie) hoort bij een hoger HBN. Bepaalt niet de zwaarte, maar wélke terugkeertijden worden getoond."
   impact: "context"
 FACTOR_TP_TM:
   label: "Factor Tp/Tm-1,0"
   eenheid: "-"
-  uitleg: "Omrekenfactor tussen piek- en spectrale golfperiode. Beïnvloedt de berekende golfoverslag."
+  uitleg: "Omrekenfactor tussen de piekgolfperiode Tp en de spectrale periode Tm-1,0 die in de overslagformule wordt gebruikt. Een hogere factor geeft langere (energierijkere) golven en dus meer overslag: hoger HBN."
+  impact: "hoger"
+HULPDIJKENMETHODE:
+  label: "Hulpdijkenmethode"
+  eenheid: ""
+  uitleg: "Rekentechnische methode voor de tussenliggende (hulp)dijkhoogtes waarmee het HBN wordt geïnterpoleerd. 0 = standaardmethode."
+  impact: "geen"
+
+# ---------------- Kering & onzekerheid ----------------
+KERING:
+  label: "Kering meenemen"
+  eenheid: ""
+  uitleg: "Geeft aan of stormvloedkeringen (Europoortkering/Maeslantkering en Hollandsche IJsselkering) in de berekening zitten. 1 = ja. De keringen dempen de belasting als ze sluiten, maar bij niet-sluiten of waterbezwaar blijft er belasting."
+  impact: "context"
+VERDELING:
+  label: "Verdeling modelonzekerheid"
+  eenheid: ""
+  uitleg: "Kansverdeling die voor de modelonzekerheid van de golfoverslag wordt gebruikt (samen met MU en SIGMA). 0 = de standaardverdeling."
   impact: "context"
 MU:
-  label: "Mu (keringonzekerheid)"
+  label: "Mu (modelonzekerheid overslag)"
   eenheid: "-"
-  uitleg: "Verwachtingswaarde van de onzekerheid in het keringgedrag."
-  impact: "context"
+  uitleg: "Verwachtingswaarde van de onzekerheid in de golfoverslagberekening. Een hogere waarde schuift de belasting systematisch omhoog."
+  impact: "hoger"
 SIGMA:
-  label: "Sigma (keringonzekerheid)"
+  label: "Sigma (modelonzekerheid overslag)"
   eenheid: "-"
-  uitleg: "Spreiding van de onzekerheid in het keringgedrag. Meer spreiding kan de belasting verhogen."
+  uitleg: "Spreiding (standaardafwijking) van de onzekerheid in de golfoverslag. Meer spreiding verzwaart vooral de kleine frequenties en verhoogt het HBN."
+  impact: "hoger"
+ALFA:
+  label: "Alfa (faalkans keringsluiting)"
+  eenheid: "-"
+  uitleg: "Kans dat de stormvloedkering niet (goed) sluit als dat nodig is. Een hogere niet-sluitkans laat meer buitenwater door en verhoogt het HBN."
+  impact: "hoger"
+ALFA_HOIJK:
+  label: "Alfa Hollandsche IJsselkering"
+  eenheid: "-"
+  uitleg: "Niet-sluitkans specifiek voor de Hollandsche IJsselkering. Hogere waarde = grotere kans op een open kering tijdens storm = hoger HBN."
+  impact: "hoger"
+KANS_WATERBEZWAAR:
+  label: "Kans op waterbezwaar"
+  eenheid: "-"
+  uitleg: "Kans dat er bij een gesloten kering waterbezwaar (opstuwing achter de kering door aanvoer) optreedt. Draagt bij aan de belasting in de gesloten-keringtoestanden."
+  impact: "hoger"
+
+# ---------------- Rivierafvoer & statistiekbestanden ----------------
+QAFTOP:
+  label: "Aftopdebiet"
+  eenheid: "m³/s"
+  uitleg: "Rivierafvoer (Lobith) waarboven de afvoer wordt 'afgetopt': hogere afvoeren worden niet zwaarder meegewogen, omdat de rivier bovenstrooms overstroomt. Een hogere aftopgrens laat zwaardere afvoeren toe en verhoogt het HBN bij afvoergedreven locaties."
+  impact: "hoger"
+OVKANSQ:
+  label: "Afvoerstatistiek (overschrijdingskansen Q)"
+  eenheid: ""
+  uitleg: "Bestand met overschrijdingskansen van de piekafvoer te Lobith. De G- of W-variant (klimaatscenario) bepaalt de zwaarte. 'metOnzHeid' = inclusief statistische onzekerheid. De invloed is klein bij storm-/zeegedreven locaties."
+  impact: "context"
+QMIN:
+  label: "Minimale afvoer (rekengrid)"
+  eenheid: "m³/s"
+  uitleg: "Ondergrens van het afvoerrekenrooster. Rekentechnische instelling; beïnvloedt het resultaat niet als het rooster ruim genoeg is."
+  impact: "geen"
+QMAX:
+  label: "Maximale afvoer (rekengrid)"
+  eenheid: "m³/s"
+  uitleg: "Bovengrens van het afvoerrekenrooster. Moet boven het aftopdebiet liggen. Rekentechnisch."
+  impact: "geen"
+QSTAP:
+  label: "Afvoerstap (rekengrid)"
+  eenheid: "m³/s"
+  uitleg: "Stapgrootte van het afvoerrekenrooster. Kleiner = nauwkeuriger maar trager. Rekentechnisch."
+  impact: "geen"
+TDQNM:
+  label: "Topduurstatistiek afvoer"
+  eenheid: ""
+  uitleg: "Bestand met de topduur (hoe lang een afvoerpiek aanhoudt) te Lobith. Beïnvloedt hoe lang extreme afvoeren samenvallen met storm."
+  impact: "context"
+BASISDUUR:
+  label: "Basisduur"
+  eenheid: "uur"
+  uitleg: "Duur van de beschouwde basisstormperiode in de kansberekening. Rekentechnische statistiekinstelling."
+  impact: "context"
+BLOKDUUR:
+  label: "Blokduur"
+  eenheid: "uur"
+  uitleg: "Duur van een deelblok waarin condities constant worden verondersteld. Statistiek-/rekeninstelling."
+  impact: "context"
+
+# ---------------- Zeewaterstand & wind ----------------
+ZWSNM:
+  label: "Zeewaterstandstatistiek"
+  eenheid: ""
+  uitleg: "Bestand met de (voorwaardelijke) kansverdeling van de zeewaterstand te Maasmond. Bepaalt samen met ZWS_STIJGING de zwaarte van het buitenwater. Dominante belasting bij deze locatie."
+  impact: "context"
+OVKANSU:
+  label: "Windsnelheidstatistiek"
+  eenheid: ""
+  uitleg: "Bestand met overschrijdingskansen van de windsnelheid (Schiphol, met Volkerfactor). Zwaardere windstatistiek geeft meer opwaaiing en golven: hoger HBN."
+  impact: "context"
+KANSRNM:
+  label: "Windrichtingstatistiek"
+  eenheid: ""
+  uitleg: "Bestand met de kansen per windrichting (Schiphol). Bepaalt welke windrichtingen domineren; bij deze locatie zijn dat de noordwestelijke richtingen."
+  impact: "context"
+PWINDWESTNM:
+  label: "Kans westelijke wind"
+  eenheid: ""
+  uitleg: "Bestand met de kans op westelijke wind, gebruikt in de combinatie van wind en zeewaterstand."
+  impact: "context"
+UMAX:
+  label: "Maximale windsnelheid (rekengrid)"
+  eenheid: "m/s"
+  uitleg: "Bovengrens van het windrekenrooster. Rekentechnisch."
+  impact: "geen"
+WINDINVLOED:
+  label: "Extra windinvloed"
+  eenheid: ""
+  uitleg: "Schakelaar voor een aanvullende windinvloedcorrectie. NEE = uit."
+  impact: "context"
+
+# ---------------- Onzekerheidsschakelaars ----------------
+STAT_ONZ:
+  label: "Statistische onzekerheid meenemen"
+  eenheid: ""
+  uitleg: "JA = de statistische (steekproef)onzekerheid in de basisstatistiek wordt meegenomen. Dit verzwaart vooral de kleine frequenties en verhoogt het HBN."
+  impact: "hoger"
+ONZ_WATERSTAND:
+  label: "Onzekerheid waterstand"
+  eenheid: ""
+  uitleg: "Extra modelonzekerheid op de waterstand meenemen (JA/NEE). Aan = hoger HBN."
+  impact: "hoger"
+ONZ_GOLFHOOGTE:
+  label: "Onzekerheid golfhoogte"
+  eenheid: ""
+  uitleg: "Extra modelonzekerheid op de golfhoogte meenemen (JA/NEE). Aan = hoger HBN."
+  impact: "hoger"
+ONZ_GOLFPERIODE:
+  label: "Onzekerheid golfperiode"
+  eenheid: ""
+  uitleg: "Extra modelonzekerheid op de golfperiode meenemen (JA/NEE). Aan = hoger HBN."
+  impact: "hoger"
+
+# ---------------- Locatie & administratief ----------------
+LOCATIE:
+  label: "Locatie"
+  eenheid: ""
+  uitleg: "Naam/code van de doorsnede waarvoor gerekend wordt."
+  impact: "geen"
+REGIO:
+  label: "Watersysteemregio"
+  eenheid: ""
+  uitleg: "Regionummer van het watersysteem in HydraNL (hier het benedenrivierengebied / Rijn-Maasmonding met getijde-invloed)."
+  impact: "geen"
+PROFIEL:
+  label: "Dijkprofiel"
+  eenheid: ""
+  uitleg: "Bestand met de dwarsdoorsnede van de kering (taluds, ruwheid, kruinhoogte). Bepaalt hoeveel golfoverslag bij een gegeven waterstand optreedt."
+  impact: "context"
+VERSIE:
+  label: "HydraNL-versie"
+  eenheid: ""
+  uitleg: "Softwareversie waarmee gerekend is. Verschillende versies kunnen kleine verschillen geven."
+  impact: "geen"
+DBRVW:
+  label: "Randvoorwaardendatabase"
+  eenheid: ""
+  uitleg: "Database met de hydraulische randvoorwaarden (waterstanden/golven per combinatie) voor het zichtjaar. De kern van de rekeninvoer."
   impact: "context"

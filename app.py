@@ -7,7 +7,7 @@ from hydranl.archive import ontdek_berekeningen, uitpakken
 from hydranl.model import laad_berekening
 from hydranl.compare import vergelijk_invoer, hbn_matrix, hbn_delta
 from hydranl.knowledge import laad_kennisbank, beschrijf
-from hydranl.narrative import duiding
+from hydranl.narrative import duiding, volledige_analyse
 
 NEGEER = {"DATBER", "UITVOERBESTAND", "USERNAME", "USER", "MEMO"}
 ROOT = Path(__file__).resolve().parent
@@ -59,8 +59,8 @@ referentie = st.selectbox("Referentie", selectie)
 gekozen = [b for b in berekeningen if b.naam in selectie]
 kennis = laad_kennisbank()
 
-tab_over, tab_invoer, tab_impact, tab_ill = st.tabs(
-    ["Overzicht", "Invoerverschillen", "Impact", "Illustratiepunten"])
+tab_over, tab_invoer, tab_analyse, tab_impact, tab_ill = st.tabs(
+    ["Overzicht", "Invoerverschillen", "Analyse", "Impact", "Illustratiepunten"])
 
 with tab_over:
     st.subheader("Hydraulisch belastingniveau (m+NAP) per frequentie")
@@ -81,7 +81,16 @@ with tab_invoer:
         toon.insert(0, "Uitleg", uitleg)
         st.dataframe(toon)
 
+with tab_analyse:
+    st.subheader("Automatische diepe analyse")
+    st.markdown(volledige_analyse(gekozen, referentie, kennis, negeer=NEGEER))
+    analyse_md = ROOT / "ANALYSE.md"
+    if analyse_md.exists() and {b.naam for b in gekozen} >= {"1_Shape_1"}:
+        with st.expander("Uitgebreide achtergrondanalyse van de voorbeelddata (ANALYSE.md)"):
+            st.markdown(analyse_md.read_text(encoding="utf-8"))
+
 with tab_impact:
+    st.caption("Beknopte duiding per variant t.o.v. de referentie.")
     ref = next(x for x in gekozen if x.naam == referentie)
     for b in gekozen:
         if b.naam == referentie:
